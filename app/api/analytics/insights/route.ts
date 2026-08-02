@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js'
 
 import {
   calculateNextReview,
+  buildStreakSummary,
   detectBlindSpots,
   type BlindSpotProblemRecord,
   type BlindSpotSubmissionRecord,
@@ -84,10 +85,6 @@ function buildServerClient(request: Request) {
 function getUtcDayEnd(reference = new Date()): Date {
   const endOfDay = new Date(Date.UTC(reference.getUTCFullYear(), reference.getUTCMonth(), reference.getUTCDate(), 23, 59, 59, 999))
   return endOfDay
-}
-
-function getUtcDayKey(isoValue: string): string {
-  return isoValue.slice(0, 10)
 }
 
 function getDaysSince(isoValue: string, referenceDate = new Date()): number {
@@ -179,49 +176,6 @@ function buildMasteryDistribution(
       }
     })
     .sort((left, right) => right.masteryScore - left.masteryScore)
-}
-
-function buildStreakSummary(submissions: RouteSubmission[]) {
-  const solvedDates = new Set(
-    submissions.filter((submission) => submission.verdict === 'ACCEPTED').map((submission) => getUtcDayKey(submission.submitted_at)),
-  )
-
-  const sortedDates = [...solvedDates].sort((left, right) => right.localeCompare(left))
-  const lastSolvedAt = sortedDates[0] ? `${sortedDates[0]}T00:00:00.000Z` : null
-
-  let currentStreak = 0
-  if (lastSolvedAt) {
-    const cursor = new Date(lastSolvedAt)
-
-    while (solvedDates.has(getUtcDayKey(cursor.toISOString()))) {
-      currentStreak += 1
-      cursor.setUTCDate(cursor.getUTCDate() - 1)
-    }
-  }
-
-  let longestStreak = 0
-  let activeRun = 0
-  let previousDate: string | null = null
-
-  for (const dateKey of [...solvedDates].sort()) {
-    if (!previousDate) {
-      activeRun = 1
-    } else {
-      const previous = new Date(`${previousDate}T00:00:00.000Z`)
-      previous.setUTCDate(previous.getUTCDate() + 1)
-      activeRun = previous.toISOString().slice(0, 10) === dateKey ? activeRun + 1 : 1
-    }
-
-    longestStreak = Math.max(longestStreak, activeRun)
-    previousDate = dateKey
-  }
-
-  return {
-    currentStreak,
-    longestStreak,
-    lastSolvedAt,
-    activeToday: solvedDates.has(getUtcDayKey(new Date().toISOString())),
-  }
 }
 
 export async function GET(request: Request): Promise<Response> {
