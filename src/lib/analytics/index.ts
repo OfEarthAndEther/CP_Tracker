@@ -1,5 +1,7 @@
 export { detectRedFlags } from './diagnostics'
 export { aggregateAnalytics } from './aggregators'
+export { calculateNextReview } from './spacedRepetition'
+export { detectBlindSpots } from './blindSpotDetector'
 export type {
   RedFlag,
   RedFlagType,
@@ -10,4 +12,12 @@ export type {
   PlatformDistribution,
   VerdictBreakdown,
   AnalyticsSummary,
+  SpacedRepetitionInput,
+  SpacedRepetitionOutput,
+  TopicPerformanceStat,
+  BlindSpotTopic,
+  TopicMasteryPoint,
+  RevisionDeckItem,
+  StreakSummary,
+  InsightsSnapshot,
 } from './types'
