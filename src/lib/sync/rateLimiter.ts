@@ -1,8 +1,8 @@
 export class RateLimiter {
   private queue: Array<{
-    task: () => Promise<unknown>
-    resolve: (value: unknown) => void
-    reject: (reason?: unknown) => void
+    task: () => Promise<any>
+    resolve: (value: any) => void
+    reject: (reason?: any) => void
   }> = []
   private isProcessing = false
   private minIntervalMs: number

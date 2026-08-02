@@ -168,7 +168,7 @@ export async function syncUserSubmissions(
               id: problemId,
               platform: 'leetcode',
               external_id: details.questionId ?? item.titleSlug,
-              title: details.title ?? item.title,
+              title: details.title ?? item.title ?? item.titleSlug ?? 'Untitled Problem',
               url: `https://leetcode.com/problems/${item.titleSlug}/`,
               normalized_rating: normalizeLeetCodeDifficulty(details.difficulty ?? 'Medium'),
               taxonomy_tags: mapTagsToCanonical((details.topicTags ?? []).map((t) => t.name ?? '')),
