@@ -157,11 +157,13 @@ function toTopicStats(submissions: BlindSpotSubmissionRecord[]): TopicPerformanc
         continue
       }
 
-      const solveTimeMinutes = Math.max(
-        0,
-        (new Date(tracker.firstAcceptedAt as string).getTime() - new Date(tracker.firstAttemptAt).getTime()) /
-          60000,
-      )
+      // Calculate elapsed time in minutes
+      const rawSolveTimeMinutes =
+        (new Date(tracker.firstAcceptedAt).getTime() - new Date(tracker.firstAttemptAt).getTime()) / 60000
+
+      // Clamp max solve time calculation per problem to 180 mins (3 hours) 
+      // to avoid multi-day wall-clock skewing analytics
+      const solveTimeMinutes = Math.min(180, Math.max(0, rawSolveTimeMinutes))
 
       stat.solveTimeTotalMinutes += solveTimeMinutes
       stat.solveTimeSamples += 1
