@@ -120,7 +120,7 @@ export async function verifyCodeforcesSubmission(params: {
 
   const startedAtSeconds = Math.floor(params.startedAt / 1000)
   const { data, error } = await fetchCfJson(
-    `/user.status?handle=${encodeURIComponent(params.handle)}&from=${startedAtSeconds}`,
+    `/user.status?handle=${encodeURIComponent(params.handle)}&from=1&count=10`,
     CfUserStatusResponseSchema,
   )
 
