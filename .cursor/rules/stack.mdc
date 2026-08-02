@@ -1,0 +1,9 @@
+---
+description: Core stack and architecture for CP Retention Tracker
+alwaysApply: true
+---
+- Stack: React + Vite + TypeScript + Tailwind CSS, Supabase (Postgres), Google OAuth.
+- Never use `any`. Prefer Zod schemas for all external data (CF API, LeetCode GraphQL, Supabase rows).
+- Keep platform-specific code (Codeforces, LeetCode) behind a single normalized interface — see schema. Never let CF/LeetCode-specific fields leak past the sync layer.
+- Be concise. Do not explain standard patterns unless asked. If a change is unnecessary, say "no changes needed".
+- No speculative abstraction — build only what the current stage requires.

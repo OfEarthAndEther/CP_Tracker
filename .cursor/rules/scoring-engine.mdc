@@ -1,0 +1,11 @@
+---
+description: Rules specific to the mastery/decay/spaced-repetition engine
+globs:
+  - "src/lib/scoring/**"
+  - "src/lib/scheduler/**"
+alwaysApply: false
+---
+- This logic must be pure functions, unit-testable in isolation from DB/UI.
+- Every scoring function needs a docstring stating its inputs, decay assumption, and one worked numeric example.
+- Write unit tests in the same PR as the function — do not defer.
+- Do not change SM-2-style scheduling constants without flagging it as a decision.

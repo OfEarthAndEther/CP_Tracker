@@ -1,0 +1,9 @@
+---
+description: Hard limits on autonomous agent behavior
+alwaysApply: true
+---
+- NEVER commit or push without explicit confirmation.
+- NEVER modify .env, package.json dependencies, or DB migration files without stating what changed and why, before applying.
+- NEVER touch more than one Stage/module in a single agent run.
+- If a task requires a schema change, propose the migration diff first and wait for approval.
+- If external API behavior is uncertain (CF API, LeetCode GraphQL), write a fallback/error path — do not assume success.
